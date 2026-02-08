@@ -1,0 +1,543 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <!--<title>Welcome – Anonymous Reporting</title>-->
+    <!--<style>-->
+        <!--body {-->
+            <!--font-family: Arial, Helvetica, sans-serif;-->
+            <!--max-width: 800px;-->
+            <!--margin: 40px auto;-->
+            <!--padding: 20px;-->
+            <!--line-height: 1.6;-->
+            <!--background: #f9fafb;-->
+            <!--color: #1f2937;-->
+        <!--}-->
+        <!--h1 {-->
+            <!--text-align: center;-->
+            <!--color: #1d4ed8;-->
+        <!--}-->
+        <!--.intro {-->
+            <!--text-align: center;-->
+            <!--margin-bottom: 30px;-->
+            <!--color: #4b5563;-->
+        <!--}-->
+        <!--.card {-->
+            <!--background: white;-->
+            <!--padding: 28px;-->
+            <!--margin: 24px 0;-->
+            <!--border-radius: 10px;-->
+            <!--box-shadow: 0 4px 12px rgba(0,0,0,0.08);-->
+        <!--}-->
+        <!--h2 {-->
+            <!--margin-top: 0;-->
+            <!--color: #1f2937;-->
+        <!--}-->
+        <!--.btn {-->
+            <!--display: inline-block;-->
+            <!--padding: 14px 28px;-->
+            <!--margin: 10px 8px;-->
+            <!--color: white;-->
+            <!--text-decoration: none;-->
+            <!--border-radius: 8px;-->
+            <!--font-weight: 600;-->
+            <!--font-size: 1.05rem;-->
+            <!--transition: background 0.2s;-->
+            <!--text-align: center;-->
+        <!--}-->
+        <!--.btn-tip {-->
+            <!--background: #16a34a;-->
+        <!--}-->
+        <!--.btn-tip:hover {-->
+            <!--background: #15803d;-->
+        <!--}-->
+        <!--.btn-help {-->
+            <!--background: #dc2626;-->
+        <!--}-->
+        <!--.btn-help:hover {-->
+            <!--background: #b91c1c;-->
+        <!--}-->
+        <!--.btn-view {-->
+            <!--background: #6b7280;-->
+            <!--padding: 12px 20px;-->
+            <!--font-size: 1rem;-->
+        <!--}-->
+        <!--.btn-view:hover {-->
+            <!--background: #4b5563;-->
+        <!--}-->
+        <!--.helpline {-->
+            <!--text-align: center;-->
+            <!--margin-top: 50px;-->
+            <!--color: #4b5563;-->
+            <!--font-size: 0.95rem;-->
+        <!--}-->
+        <!--.footer-links {-->
+            <!--text-align: center;-->
+            <!--margin-top: 30px;-->
+            <!--font-size: 0.95rem;-->
+        <!--}-->
+        <!--.footer-links a {-->
+            <!--margin: 0 12px;-->
+            <!--color: #2563eb;-->
+            <!--text-decoration: none;-->
+        <!--}-->
+        <!--.footer-links a:hover {-->
+            <!--text-decoration: underline;-->
+        <!--}-->
+    <!--</style>-->
+<!--</head>-->
+<!--<body>-->
+
+    <!--<h1>Welcome to Anonymous Reporting</h1>-->
+
+    <!--<p class="intro">-->
+        <!--You can report suspicious activities or request help <strong>without revealing your identity</strong>.-->
+    <!--</p>-->
+
+    <!--<div class="card">-->
+        <!--<h2>What would you like to do?</h2>-->
+
+        <!--<a href="{{ url_for('anonymous_tip') }}" class="btn btn-tip">Submit Anonymous Tip</a>-->
+        <!--<a href="{{ url_for('help') }}" class="btn btn-help">Request Immediate Help</a>-->
+    <!--</div>-->
+
+    <!--<div class="card">-->
+        <!--<h2>Stay Informed</h2>-->
+        <!--<p>View what others in your community have reported anonymously:</p>-->
+        <!--<a href="{{ url_for('view_tips') }}" class="btn btn-view">→ View All Reported Tips</a>-->
+        <!--<a href="{{ url_for('suspicious_places') }}" class="btn btn-view">→ View Suspicious Places</a>-->
+    <!--</div>-->
+
+    <!--<div class="helpline">-->
+        <!--<strong>Emergency Helplines (24/7):</strong><br>-->
+        <!--Police: 100 / 112<br>-->
+        <!--Women Helpline: 1091<br>-->
+        <!--Child Helpline: 1098-->
+    <!--</div>-->
+
+    <!--<div class="footer-links">-->
+        <!--<a href="{{ url_for('anonymous_tip') }}">Submit Tip</a> •-->
+        <!--<a href="{{ url_for('view_tips') }}">View Tips</a> •-->
+        <!--<a href="{{ url_for('home') }}">Back to Main Page</a>-->
+    <!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--<meta charset="UTF-8">-->
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--<title>Anonymous Reporting – Home</title>-->
+<!--<style>-->
+    <!--body {-->
+        <!--font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-->
+        <!--margin: 0;-->
+        <!--padding: 0;-->
+        <!--background-color: #f3f4f6;-->
+        <!--color: #1f2937;-->
+    <!--}-->
+
+    <!--header {-->
+        <!--background-color: #9dabe6;-->
+        <!--color: white;-->
+        <!--text-align: center;-->
+        <!--padding: 30px 20px;-->
+    <!--}-->
+
+    <!--header h1 {-->
+        <!--margin: 0;-->
+        <!--font-size: 2rem;-->
+    <!--}-->
+
+    <!--header p {-->
+        <!--margin-top: 8px;-->
+        <!--font-size: 1rem;-->
+        <!--font-weight: 400;-->
+    <!--}-->
+
+    <!--.container {-->
+        <!--max-width: 900px;-->
+        <!--margin: 30px auto;-->
+        <!--padding: 0 20px;-->
+    <!--}-->
+
+    <!--.card {-->
+        <!--background-color: white;-->
+        <!--border-radius: 12px;-->
+        <!--box-shadow: 0 4px 12px rgba(0,0,0,0.08);-->
+        <!--padding: 28px 24px;-->
+        <!--margin-bottom: 25px;-->
+        <!--text-align: center;-->
+    <!--}-->
+
+    <!--h2 {-->
+        <!--margin-top: 0;-->
+        <!--font-size: 1.5rem;-->
+        <!--color: #1f2937;-->
+    <!--}-->
+
+    <!--p {-->
+        <!--color: #4b5563;-->
+        <!--font-size: 1rem;-->
+        <!--margin-bottom: 20px;-->
+    <!--}-->
+
+    <!--.btn {-->
+        <!--display: inline-block;-->
+        <!--text-decoration: none;-->
+        <!--color: white;-->
+        <!--padding: 14px 28px;-->
+        <!--margin: 8px;-->
+        <!--font-weight: 600;-->
+        <!--font-size: 1rem;-->
+        <!--border-radius: 8px;-->
+        <!--transition: background 0.2s;-->
+    <!--}-->
+
+    <!--.btn-tip {-->
+        <!--background-color: #16a34a;-->
+    <!--}-->
+    <!--.btn-tip:hover {-->
+        <!--background-color: #15803d;-->
+    <!--}-->
+
+    <!--.btn-help {-->
+        <!--background-color: #dc2626;-->
+    <!--}-->
+    <!--.btn-help:hover {-->
+        <!--background-color: #b91c1c;-->
+    <!--}-->
+
+    <!--.btn-view {-->
+        <!--background-color: #6b7280;-->
+        <!--padding: 12px 22px;-->
+        <!--font-size: 0.95rem;-->
+    <!--}-->
+    <!--.btn-view:hover {-->
+        <!--background-color: #4b5563;-->
+    <!--}-->
+
+    <!--.helpline {-->
+        <!--text-align: center;-->
+        <!--margin-top: 50px;-->
+        <!--font-size: 0.95rem;-->
+        <!--color: #4b5563;-->
+    <!--}-->
+
+    <!--.footer-links {-->
+        <!--text-align: center;-->
+        <!--margin-top: 30px;-->
+        <!--font-size: 0.95rem;-->
+    <!--}-->
+
+    <!--.footer-links a {-->
+        <!--margin: 0 12px;-->
+        <!--color: #2563eb;-->
+        <!--text-decoration: none;-->
+    <!--}-->
+
+    <!--.footer-links a:hover {-->
+        <!--text-decoration: underline;-->
+    <!--}-->
+<!--</style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<header>-->
+    <!--<h1 >Welcome to Anonymous Reporting</h1>-->
+    <!--<p>Report tips or request help <strong>without revealing your identity</strong>.</p>-->
+<!--</header>-->
+<!--<div class="container" align="center">-->
+        <!--<div class="warning">-->
+        <!--<strong>Important Notice:</strong><br>-->
+        <!--This form is for urgent situations where you need help quickly.<br>-->
+        <!--<strong>For life-threatening emergencies, call immediately:</strong><br>-->
+        <!--Police: 100 / 112<br>-->
+        <!--Women Helpline: 1091<br>-->
+        <!--Child Helpline: 1098-->
+    <!--</div>-->
+
+<!--</div>-->
+<!--<div class="container">-->
+
+    <!--&lt;!&ndash; Primary Actions &ndash;&gt;-->
+    <!--<div class="card">-->
+        <!--<h2>Get Started</h2>-->
+        <!--<p>Choose one of the actions below:</p>-->
+        <!--<a href="{{ url_for('anonymous_tip') }}" class="btn btn-tip">Submit Anonymous Tip</a>-->
+        <!--<a href="{{ url_for('help') }}" class="btn btn-help">Request Immediate Help</a>-->
+    <!--</div>-->
+
+    <!--&lt;!&ndash; View Community Reports &ndash;&gt;-->
+    <!--<div class="card">-->
+        <!--<h2>Community Reports</h2>-->
+        <!--<p>Check what others have reported anonymously:</p>-->
+        <!--<a href="{{ url_for('view_tips') }}" class="btn btn-view">View All Reported Tips</a>-->
+        <!--<a href="{{ url_for('suspicious_places') }}" class="btn btn-view">View Suspicious Places</a>-->
+    <!--</div>-->
+
+    <!--&lt;!&ndash; Helpline Section &ndash;&gt;-->
+
+    <!--&lt;!&ndash; Footer Links &ndash;&gt;-->
+    <!--<div class="footer-links">-->
+        <!--<a href="{{ url_for('home') }}">login page</a> •-->
+        <!--<a href="{{ url_for('view_tips') }}">View Tips</a> •-->
+        <!--<a href="{{ url_for('help') }}">Request Help</a>-->
+    <!--</div>-->
+
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anonymous Reporting – Home</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --tip:       #16a34a;
+      --tip-dark:  #15803d;
+      --help:      #dc2626;
+      --help-dark: #b91c1c;
+      --view:      #6b7280;
+      --view-dark: #4b5563;
+      --bg-start:  #f1f5f9;
+      --bg-end:    #e2e8f0;
+      --card-bg:   rgba(255, 255, 255, 0.92);
+      --text:      #0f172a;
+      --text-mute: #475569;
+      --border:    #e2e8f0;
+      --shadow:    0 10px 25px rgba(0,0,0,0.08);
+      --radius:    16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #9dabe6 0%, #64748b 100%);
+      color: white;
+      text-align: center;
+      padding: 4rem 1.5rem 3.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    header p {
+      font-size: 1.15rem;
+      font-weight: 400;
+      opacity: 0.95;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .warning {
+      background: rgba(254, 226, 226, 0.9);
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      padding: 1.25rem 1.5rem;
+      border-radius: 12px;
+      margin: -2.5rem auto 2.5rem;
+      max-width: 720px;
+      box-shadow: 0 6px 20px rgba(220, 38, 38, 0.12);
+      backdrop-filter: blur(8px);
+      text-align: center;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .warning strong {
+      color: #7f1d1d;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.25rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    p {
+      color: var(--text-mute);
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.95rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: all 0.22s ease;
+      min-width: 220px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .btn-tip {
+      background: var(--tip);
+    }
+    .btn-tip:hover { background: var(--tip-dark); }
+
+    .btn-help {
+      background: var(--help);
+    }
+    .btn-help:hover { background: var(--help-dark); }
+
+    .btn-view {
+      background: var(--view);
+      padding: 0.85rem 1.6rem;
+      font-size: 0.97rem;
+      min-width: auto;
+    }
+    .btn-view:hover { background: var(--view-dark); }
+
+    .footer-links {
+      text-align: center;
+      margin: 3rem 0 2rem;
+      font-size: 0.95rem;
+      color: var(--text-mute);
+    }
+
+    .footer-links a {
+      color: #2563eb;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #1d4ed8;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 3rem 1rem 2.5rem; }
+      header h1 { font-size: 2.1rem; }
+      .card { padding: 1.75rem; }
+      .btn { min-width: 100%; padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to Anonymous Reporting</h1>
+    <p>Report tips or request help <strong>without revealing your identity</strong>.</p>
+  </header>
+
+  <div class="container">
+
+    <div class="warning">
+      <strong>Important Notice:</strong><br>
+      This form is for urgent situations where you need help quickly.<br>
+      <strong>For life-threatening emergencies, call immediately:</strong><br>
+      Police: 100 / 112<br>
+      Women Helpline: 1091<br>
+      Child Helpline: 1098
+    </div>
+
+    <!-- Primary Actions -->
+    <div class="card">
+      <h2>Get Started</h2>
+      <p>Choose one of the actions below:</p>
+      <div class="actions">
+        <a href="{{ url_for('anonymous_tip') }}" class="btn btn-tip">Submit Anonymous Tip</a>
+        <a href="{{ url_for('help') }}" class="btn btn-help">Request Immediate Help</a>
+      </div>
+    </div>
+
+    <!-- View Community Reports -->
+    <div class="card">
+      <h2>Community Reports</h2>
+      <p>Check what others have reported anonymously:</p>
+      <div class="actions">
+        <a href="{{ url_for('view_tips') }}" class="btn btn-view">View All Reported Tips</a>
+        <a href="{{ url_for('suspicious_places') }}" class="btn btn-view">View Suspicious Places</a>
+      </div>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="footer-links">
+      <a href="{{ url_for('home') }}">Login page</a> •
+      <a href="{{ url_for('view_tips') }}">View Tips</a> •
+      <a href="{{ url_for('help') }}">Request Help</a>
+    </div>
+
+  </div>
+
+</body>
+</html>

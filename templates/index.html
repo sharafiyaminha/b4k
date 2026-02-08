@@ -1,0 +1,163 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+  <!--<meta charset="UTF-8" />-->
+  <!--<title>Submit Anonymous Tip</title>-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--</head>-->
+<!--<body>-->
+  <!--<h1>Submit Anonymous Tip</h1>-->
+
+  <!--{% with messages = get_flashed_messages(with_categories=true) %}-->
+    <!--{% if messages %}-->
+      <!--{% for cat, msg in messages %}-->
+        <!--<p style="color: {% if cat=='error' %}red{% else %}green{% endif %};">{{ msg }}</p>-->
+      <!--{% endfor %}-->
+    <!--{% endif %}-->
+  <!--{% endwith %}-->
+
+  <!--<form method="POST">-->
+    <!--<textarea name="message" rows="6" placeholder="Describe what you saw..." required style="width:100%;"></textarea><br><br>-->
+
+    <!--<select name="category" style="padding:8px;">-->
+      <!--<option value="">Select Category (optional)</option>-->
+
+      <!--<option>Suspicious activity(drugs etc)</option>-->
+      <!--<option>Harassment</option>-->
+      <!--<option>Theft / Robbery</option>-->
+      <!--<option>Other</option>-->
+    <!--</select><br><br>-->
+
+    <!--<input type="text" name="location" placeholder="Location (optional)" style="width:100%; padding:8px;"><br><br>-->
+
+
+    <!--<button type="submit">Submit</button>-->
+  <!--</form>-->
+
+
+  <!--<p><a href="{{ url_for('view_tips') }}">View all tips</a> • <a href="{{ url_for('anohome') }}">Back</a></p>-->
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Submit Anonymous Tip</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Reset & base styles */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; }
+    body { background: #f3f4f6; color: #1f2937; padding: 20px; }
+
+    /* Header */
+    header { text-align: center; margin-bottom: 30px; }
+    header h1 { color: #1d4ed8; font-size: 2rem; margin-bottom: 10px; }
+    header p { color: #4b5563; font-size: 1rem; }
+
+    /* Flash messages */
+    .flash { margin-bottom: 20px; padding: 12px 16px; border-radius: 8px; font-weight: 500; }
+    .flash-success { background: #dcfce7; color: #166534; }
+    .flash-error { background: #fee2e2; color: #991b1b; }
+
+    /* Form card */
+    .card { background: white; padding: 30px 24px; border-radius: 12px; max-width: 600px; margin: 0 auto 30px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .card h2 { color: #1f2937; margin-bottom: 20px; font-size: 1.5rem; text-align: center; }
+
+    /* Form elements */
+    textarea, input[type="text"], select { width: 100%; padding: 12px 10px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #d1d5db; font-size: 1rem; resize: vertical; }
+    select { cursor: pointer; }
+    input[readonly] { background: #f3f4f6; }
+
+    /* Buttons */
+    button { background: #1d4ed8; color: white; border: none; padding: 14px 28px; border-radius: 8px; font-size: 1rem; cursor: pointer; font-weight: 600; transition: background 0.2s; }
+    button:hover { background: #2563eb; }
+
+    /* Footer links */
+    .footer { text-align: center; margin-top: 20px; font-size: 0.95rem; }
+    .footer a { color: #2563eb; text-decoration: none; margin: 0 10px; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* Location status */
+    .location-status { font-size: 0.9rem; color: #6b7280; margin-bottom: 15px; }
+
+    @media (max-width: 640px) {
+      .card { padding: 24px 16px; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Submit an Anonymous Tip</h1>
+  <p>Your identity is protected. Help us keep your community safe.</p>
+</header>
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="card">
+      {% for cat, msg in messages %}
+        <div class="flash {% if cat=='error' %}flash-error{% else %}flash-success{% endif %}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- Tip Form -->
+<div class="card">
+  <h2>Report Suspicious Activity</h2>
+  <form method="POST">
+    <textarea name="message" rows="6" placeholder="Describe what you saw..." required></textarea>
+
+    <select name="category">
+      <option value="">Select Category (optional)</option>
+      <option>Suspicious activity (drugs etc)</option>
+      <option>Harassment</option>
+      <option>Theft / Robbery</option>
+      <option>Other</option>
+    </select>
+
+    <label for="location">Your current location:</label>
+    <input type="text" name="location" id="location" placeholder="Detecting location..." readonly>
+    <div id="location-status" class="location-status">Detecting your location automatically...</div>
+
+    <div align="center" > <button type="submit">Submit Tip</button></div>
+  </form>
+</div>
+
+<!-- Footer links -->
+<div class="footer">
+  <a href="{{ url_for('view_tips') }}">View All Tips</a> •
+  <a href="{{ url_for('anohome') }}">Back to Dashboard</a>
+</div>
+
+<script>
+  // Auto-detect user location using browser geolocation
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const lat = position.coords.latitude.toFixed(5);
+        const lon = position.coords.longitude.toFixed(5);
+        document.getElementById('location').value = `Lat: ${lat}, Lon: ${lon}`;
+        document.getElementById('location-status').innerText = "Location detected successfully!";
+      },
+      function(error) {
+        console.warn('Geolocation error:', error);
+        document.getElementById('location').placeholder = "Unable to detect location";
+        document.getElementById('location-status').innerText = "Failed to detect location";
+      },
+      { enableHighAccuracy: true, timeout: 5000 }
+    );
+  } else {
+    document.getElementById('location').placeholder = "Geolocation not supported";
+    document.getElementById('location-status').innerText = "Your browser does not support geolocation";
+  }
+</script>
+
+</body>
+</html>
+
+
+
+

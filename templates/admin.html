@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Police Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f4f6f9;
+      color: #333;
+    }
+
+    header {
+      background-color: #0b3c5d;
+      color: white;
+      padding: 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    nav {
+      margin-top: 8px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-right: 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 8px;
+    }
+
+    .tip-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .tip-row {
+      margin-bottom: 6px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .status.pending {
+      background-color: #ffeeba;
+      color: #856404;
+    }
+
+    .status.reviewed {
+      background-color: #cce5ff;
+      color: #004085;
+    }
+
+    .status.closed {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .message {
+      background-color: #f8f9fa;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 8px;
+      white-space: pre-line;
+    }
+
+    .empty {
+      text-align: center;
+      color: #777;
+      background: #fff;
+      padding: 30px;
+      border-radius: 6px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 13px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Police Dashboard</h1>
+  <nav>
+    <a href="{{ url_for('add_place') }}">➕ Add Suspicious Place</a>
+    <a href="{{ url_for('logout') }}">🚪 Logout</a>
+    <a href="{{ url_for('help_view') }}">🚪 view help</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2>Reported Tips</h2>
+
+  {% if tips %}
+    {% for tip in tips %}
+      <div class="tip-card">
+        <div class="tip-row">
+          <span class="label">Tip Code:</span> {{ tip['tip_code'] }}
+        </div>
+
+        <div class="tip-row">
+          <span class="label">Submitted:</span> {{ tip['created_at'] }}
+        </div>
+
+        <div class="tip-row">
+          <span class="label">Location:</span> {{ tip['location'] or '—' }}
+        </div>
+
+        <div class="tip-row">
+          <span class="label">Category:</span> {{ tip['category'] or '—' }}
+        </div>
+
+        <div class="tip-row">
+          <span class="label">Status:</span>
+          <span class="status {{ tip['status']|lower }}">
+            {{ tip['status'] }}
+          </span>
+        </div>
+
+        <div class="label">Message:</div>
+        <div class="message">
+          {{ tip['message'] }}
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty">
+      No tips have been reported yet.
+    </div>
+  {% endif %}
+</div>
+
+<footer>
+  © Police Monitoring System
+</footer>
+
+</body>
+</html>

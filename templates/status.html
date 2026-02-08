@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Check Status</title>
+</head>
+<body>
+  <h1>Check Tip Status</h1>
+
+  <form method="POST">
+    <input type="text" name="tip_code" placeholder="Tip Code (e.g. TABC1234)" required style="width:100%; padding:8px;"><br><br>
+    <input type="text" name="access_code" placeholder="Access Code" required style="width:100%; padding:8px;"><br><br>
+    <button type="submit">Check Status</button>
+  </form>
+
+  {% if tip %}
+    <h3>Tip Found</h3>
+    <p><strong>Status:</strong> {{ tip['status'] }}</p>
+    <p><strong>Location:</strong> {{ tip['location'] or '—' }}</p>
+    <p><strong>Message:</strong><br>{{ tip['message'] | replace('\n', '<br>') }}</p>
+  {% endif %}
+</body>
+</html>

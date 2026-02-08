@@ -1,0 +1,537 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <!--<title>Request Immediate Help - Anonymous</title>-->
+    <!--<style>-->
+        <!--body {-->
+            <!--font-family: Arial, Helvetica, sans-serif;-->
+            <!--max-width: 700px;-->
+            <!--margin: 30px auto;-->
+            <!--padding: 20px;-->
+            <!--line-height: 1.6;-->
+            <!--background: #f9fafb;-->
+            <!--color: #1f2937;-->
+        <!--}-->
+        <!--h1 {-->
+            <!--color: #dc2626;-->
+            <!--text-align: center;-->
+        <!--}-->
+        <!--.warning {-->
+            <!--background: #fef3c7;-->
+            <!--border-left: 5px solid #d97706;-->
+            <!--padding: 15px 20px;-->
+            <!--margin: 20px 0;-->
+            <!--border-radius: 6px;-->
+        <!--}-->
+        <!--.form-group {-->
+            <!--margin-bottom: 20px;-->
+        <!--}-->
+        <!--label {-->
+            <!--display: block;-->
+            <!--margin-bottom: 6px;-->
+            <!--font-weight: 600;-->
+        <!--}-->
+        <!--textarea, input[type="text"] {-->
+            <!--width: 100%;-->
+            <!--padding: 12px;-->
+            <!--border: 1px solid #d1d5db;-->
+            <!--border-radius: 6px;-->
+            <!--font-size: 1rem;-->
+            <!--box-sizing: border-box;-->
+        <!--}-->
+        <!--textarea {-->
+            <!--resize: vertical;-->
+            <!--min-height: 120px;-->
+        <!--}-->
+        <!--.btn {-->
+            <!--display: inline-block;-->
+            <!--padding: 14px 28px;-->
+            <!--background: #dc2626;-->
+            <!--color: white;-->
+            <!--border: none;-->
+            <!--border-radius: 6px;-->
+            <!--font-size: 1.1rem;-->
+            <!--cursor: pointer;-->
+            <!--transition: background 0.2s;-->
+        <!--}-->
+        <!--.btn:hover {-->
+            <!--background: #b91c1c;-->
+        <!--}-->
+        <!--.location-status {-->
+            <!--font-size: 0.9rem;-->
+            <!--margin-top: 6px;-->
+            <!--color: #6b7280;-->
+        <!--}-->
+        <!--.success-location { color: #16a34a; }-->
+        <!--.error-location { color: #dc2626; }-->
+        <!--.links {-->
+            <!--margin-top: 30px;-->
+            <!--text-align: center;-->
+            <!--font-size: 0.95rem;-->
+        <!--}-->
+        <!--.links a {-->
+            <!--margin: 0 12px;-->
+            <!--color: #2563eb;-->
+            <!--text-decoration: none;-->
+        <!--}-->
+        <!--.flash {-->
+            <!--padding: 12px;-->
+            <!--border-radius: 6px;-->
+            <!--margin: 15px 0;-->
+        <!--}-->
+        <!--.success { background: #d1fae5; color: #065f46; }-->
+        <!--.error   { background: #fee2e2; color: #991b1b; }-->
+    <!--</style>-->
+<!--</head>-->
+<!--<body>-->
+
+    <!--<h1>Request Immediate Help</h1>-->
+
+
+    <!--{% with messages = get_flashed_messages(with_categories=true) %}-->
+        <!--{% if messages %}-->
+            <!--{% for category, message in messages %}-->
+                <!--<div class="flash {{ category }}">-->
+                    <!--{{ message }}-->
+                <!--</div>-->
+            <!--{% endfor %}-->
+        <!--{% endif %}-->
+    <!--{% endwith %}-->
+
+    <!--<form method="POST" action="{{ url_for('help') }}" enctype="multipart/form-data">-->
+
+        <!--<div class="form-group">-->
+            <!--<label for="message">Describe the situation (be as detailed as possible):</label>-->
+            <!--<textarea-->
+                <!--name="message"-->
+                <!--id="message"-->
+                <!--rows="6"-->
+                <!--required-->
+                <!--placeholder="What is happening right now? Where are you? Any danger to people?"></textarea>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label for="location">Your current location:</label>-->
+            <!--<input-->
+                <!--type="text"-->
+                <!--name="location"-->
+                <!--id="location"-->
+                <!--placeholder="Detecting location..."-->
+                <!--readonly style="background:#f3f4f6;">-->
+            <!--<div id="location-status" class="location-status">Detecting your location automatically...</div>-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash; Optional image upload &ndash;&gt;-->
+        <!--<div class="form-group">-->
+            <!--<label for="image">Attach photo / screenshot (optional):</label>-->
+            <!--<input type="file" name="image" id="image" accept="image/*">-->
+            <!--<small style="color:#6b7280;">(jpg, png, gif – max ~5MB)</small>-->
+        <!--</div>-->
+
+        <!--<button type="submit" class="btn">Send Help Request Anonymously</button>-->
+    <!--</form>-->
+
+    <!--<div class="links">-->
+        <!--<a href="{{ url_for('anonymous_tip') }}">← Submit normal tip instead</a> •-->
+        <!--<a href="{{ url_for('anohome') }}">Back to home</a>-->
+    <!--</div>-->
+
+    <!--&lt;!&ndash; JavaScript for automatic location detection &ndash;&gt;-->
+    <!--<script>-->
+        <!--document.addEventListener("DOMContentLoaded", function () {-->
+            <!--const locationInput = document.getElementById("location");-->
+            <!--const statusDiv = document.getElementById("location-status");-->
+
+            <!--if (!navigator.geolocation) {-->
+                <!--statusDiv.textContent = "Geolocation is not supported by your browser.";-->
+                <!--statusDiv.className = "location-status error-location";-->
+                <!--locationInput.removeAttribute("readonly");-->
+                <!--locationInput.placeholder = "Enter location manually";-->
+                <!--return;-->
+            <!--}-->
+
+            <!--statusDiv.textContent = "Detecting your location...";-->
+            <!--statusDiv.className = "location-status";-->
+
+            <!--navigator.geolocation.getCurrentPosition(-->
+                <!--function (position) {-->
+                    <!--const lat = position.coords.latitude.toFixed(6);-->
+                    <!--const lon = position.coords.longitude.toFixed(6);-->
+                    <!--const accuracy = position.coords.accuracy.toFixed(0);-->
+                    <!--const locationText = `Lat: ${lat}, Lon: ${lon} (accuracy ~${accuracy}m)`;-->
+
+                    <!--locationInput.value = locationText;-->
+                    <!--statusDiv.textContent = "Location detected successfully!";-->
+                    <!--statusDiv.className = "location-status success-location";-->
+                <!--},-->
+                <!--function (error) {-->
+                    <!--let msg = "Could not detect location";-->
+                    <!--if (error.code === error.PERMISSION_DENIED) {-->
+                        <!--msg = "Location access denied. Please enable it or enter manually.";-->
+                    <!--} else if (error.code === error.POSITION_UNAVAILABLE) {-->
+                        <!--msg = "Location information unavailable.";-->
+                    <!--} else if (error.code === error.TIMEOUT) {-->
+                        <!--msg = "Location request timed out.";-->
+                    <!--}-->
+                    <!--statusDiv.textContent = msg;-->
+                    <!--statusDiv.className = "location-status error-location";-->
+                    <!--locationInput.removeAttribute("readonly");-->
+                    <!--locationInput.placeholder = "Enter location manually (e.g. Near Railway Station)";-->
+                <!--},-->
+                <!--{-->
+                    <!--enableHighAccuracy: true,-->
+                    <!--timeout: 10000,-->
+                    <!--maximumAge: 0-->
+                <!--}-->
+            <!--);-->
+        <!--});-->
+    <!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Immediate Help – Anonymous</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --help:      #dc2626;
+      --help-d:    #b91c1c;
+      --success:   #16a34a;
+      --danger:    #dc2626;
+      --police:    #1e40af;
+      --bg-start:  #f1f5f9;
+      --bg-end:    #e2e8f0;
+      --card-bg:   rgba(255, 255, 255, 0.92);
+      --text:      #0f172a;
+      --text-mute: #475569;
+      --border:    #e2e8f0;
+      --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.08);
+      --radius:    16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin: 2rem 0 3rem;
+    }
+
+    header h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--help);
+      margin-bottom: 0.5rem;
+    }
+
+    header .subtitle {
+      color: var(--text-mute);
+      font-size: 1.05rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.25rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md), 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .warning {
+      background: rgba(254, 226, 226, 0.75);
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      padding: 1.25rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      font-size: 0.98rem;
+      line-height: 1.5;
+    }
+
+    .warning strong {
+      color: #7f1d1d;
+    }
+
+    .flash-messages {
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .flash {
+      padding: 0.9rem 1.25rem;
+      border-radius: 10px;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .flash.success { background: #dcfce7; color: #166534; }
+    .flash.error   { background: #fee2e2; color: #991b1b; }
+
+    h2, label {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    textarea,
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      padding: 0.95rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      background: white;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--help);
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+    }
+
+    input[readonly] {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .location-status {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      color: var(--text-mute);
+    }
+
+    .success-location { color: var(--success); }
+    .error-location   { color: var(--danger); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 1.1rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: white;
+      background: var(--help);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      margin-top: 1.5rem;
+    }
+
+    .btn:hover {
+      background: var(--help-d);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(220, 38, 38, 0.25);
+    }
+
+    .footer-links {
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 0.95rem;
+      color: var(--text-mute);
+    }
+
+    .footer-links a {
+      color: var(--police);
+      font-weight: 500;
+      text-decoration: none;
+      margin: 0 1.25rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #1d4ed8;
+      text-decoration: underline;
+    }
+
+    small {
+      color: var(--text-mute);
+      font-size: 0.9rem;
+      display: block;
+      margin-top: 0.4rem;
+    }
+
+    @media (max-width: 640px) {
+      .card { padding: 1.75rem; }
+      header h1 { font-size: 1.95rem; }
+      .btn { padding: 1.15rem; }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <h1>Request Immediate Help</h1>
+      <div class="subtitle">Your message will be sent anonymously and handled with urgency</div>
+    </header>
+
+    <div class="warning">
+      <strong>For life-threatening emergencies, call immediately:</strong><br>
+      Police: 100 / 112  •  Women Helpline: 1091  •  Child Helpline: 1098
+    </div>
+
+    <div class="card">
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="{{ url_for('help') }}" enctype="multipart/form-data">
+
+        <div class="form-group">
+          <label for="message">Describe the situation</label>
+          <textarea
+            name="message"
+            id="message"
+            rows="6"
+            required
+            placeholder="What is happening right now? Where are you? Any immediate danger to people? Be as specific as possible.">
+          </textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Your current location</label>
+          <input
+            type="text"
+            name="location"
+            id="location"
+            placeholder="Detecting location..."
+            readonly
+          >
+          <div id="location-status" class="location-status">Detecting your location automatically...</div>
+        </div>
+
+        <div class="form-group">
+          <label for="image">Attach photo or screenshot (optional)</label>
+          <input type="file" name="image" id="image" accept="image/*">
+          <small>jpg, png, gif – max ~5MB</small>
+        </div>
+
+        <button type="submit" class="btn">Send Help Request Anonymously</button>
+
+      </form>
+    </div>
+
+    <div class="footer-links">
+      <a href="{{ url_for('anonymous_tip') }}">Submit normal tip instead</a> •
+      <a href="{{ url_for('anohome') }}">Back to home</a>
+    </div>
+
+  </div>
+
+  <!-- Location detection script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const locationInput = document.getElementById("location");
+      const statusDiv = document.getElementById("location-status");
+
+      if (!navigator.geolocation) {
+        statusDiv.textContent = "Geolocation not supported by your browser.";
+        statusDiv.className = "location-status error-location";
+        locationInput.removeAttribute("readonly");
+        locationInput.placeholder = "Enter location manually";
+        return;
+      }
+
+      statusDiv.textContent = "Detecting your location...";
+      statusDiv.className = "location-status";
+
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const lat = position.coords.latitude.toFixed(6);
+          const lon = position.coords.longitude.toFixed(6);
+          const accuracy = position.coords.accuracy.toFixed(0);
+          locationInput.value = `Lat: ${lat}, Lon: ${lon} (≈${accuracy}m accurate)`;
+          statusDiv.textContent = "Location detected successfully!";
+          statusDiv.className = "location-status success-location";
+        },
+        function (error) {
+          let msg = "Could not detect location";
+          if (error.code === error.PERMISSION_DENIED) {
+            msg = "Location access denied. Please enable it or enter manually.";
+          } else if (error.code === error.POSITION_UNAVAILABLE) {
+            msg = "Location information unavailable.";
+          } else if (error.code === error.TIMEOUT) {
+            msg = "Location request timed out.";
+          }
+          statusDiv.textContent = msg;
+          statusDiv.className = "location-status error-location";
+          locationInput.removeAttribute("readonly");
+          locationInput.placeholder = "Enter location manually (e.g. Near Kozhikode Beach)";
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 12000,
+          maximumAge: 0
+        }
+      );
+    });
+  </script>
+
+</body>
+</html>

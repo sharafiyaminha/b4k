@@ -1,0 +1,270 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+  <!--<meta charset="UTF-8" />-->
+  <!--<title>Tip & Safety Portal</title>-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--<style>-->
+    <!--body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }-->
+    <!--.card { border: 1px solid #ccc; padding: 20px; margin: 20px 0; border-radius: 8px; }-->
+    <!--.btn { display: inline-block; padding: 12px 24px; color: white; text-decoration: none; border-radius: 6px; }-->
+    <!--.btn-police { background: #1e40af; }-->
+    <!--.btn-anon { background: #16a34a; }-->
+  <!--</style>-->
+<!--</head>-->
+<!--<body>-->
+  <!--<h1>Community Safety Portal</h1>-->
+
+  <!--{% with messages = get_flashed_messages(with_categories=true) %}-->
+    <!--{% if messages %}-->
+      <!--{% for category, msg in messages %}-->
+        <!--<p style="color: {% if category=='error' %}red{% else %}green{% endif %};">{{ msg }}</p>-->
+      <!--{% endfor %}-->
+    <!--{% endif %}-->
+  <!--{% endwith %}-->
+
+  <!--<div class="card">-->
+    <!--<h2>Police / Admin Login</h2>-->
+    <!--<form method="POST" action="{{ url_for('police_login') }}">-->
+      <!--<input type="password" name="password" placeholder="Enter password" required style="width:100%; padding:10px; margin:10px 0;">-->
+      <!--<button type="submit" class="btn btn-police">Login as Police</button>-->
+    <!--</form>-->
+  <!--</div>-->
+
+  <!--<div class="card">-->
+    <!--<h2>Anonymous User</h2>-->
+    <!--<a href="{{ url_for('anohome') }}" class="btn btn-anon">  Anonymously Tip</a>-->
+    <!--<br><br>-->
+    <!--<a href="{{ url_for('view_tips') }}">View All Reported Tips</a> •-->
+    <!--<a href="{{ url_for('suspicious_places') }}">View Suspicious Places</a>-->
+    <!--<a href="{{ url_for('help_view') }}">All Reported Helps </a>-->
+
+  <!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Safety Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --police:    #1e40af;
+      --police-d:  #1e3a8a;
+      --anon:      #16a34a;
+      --anon-d:    #15803d;
+      --bg:        #f8fafc;
+      --card-bg:   rgba(255, 255, 255, 0.92);
+      --text:      #0f172a;
+      --text-mute: #475569;
+      --border:    #e2e8f0;
+      --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.08);
+      --radius:    16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-mute);
+      font-size: 1.05rem;
+    }
+
+    .flash-messages {
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .flash-messages p {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    .flash-messages .error   { background: #fee2e2; color: #991b1b; }
+    .flash-messages .success { background: #dcfce7; color: #166534; }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 1.75rem;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md), 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      color: var(--text);
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      margin-bottom: 1.25rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--police);
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.15);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.9rem 1.8rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .btn-police {
+      background: var(--police);
+    }
+
+    .btn-police:hover {
+      background: var(--police-d);
+    }
+
+    .btn-anon {
+      background: var(--anon);
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-anon:hover {
+      background: var(--anon-d);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-mute);
+    }
+
+    .links a {
+      color: var(--text);
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .links a:hover {
+      color: var(--police);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 1.5rem 1rem; }
+      .card { padding: 1.5rem; }
+      h1 { font-size: 1.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <h1>Community Safety Portal</h1>
+      <div class="subtitle">Share tips securely • Help keep your neighborhood safe</div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, msg in messages %}
+            <p class="{{ category }}">{{ msg }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="card">
+      <h2>Police / Admin Access</h2>
+      <form method="POST" action="{{ url_for('police_login') }}">
+        <input type="password" name="password" placeholder="Enter admin password" required autocomplete="current-password">
+        <button type="submit" class="btn btn-police">Login as Police</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Community Member</h2>
+
+      <a href="{{ url_for('anohome') }}" class="btn btn-anon">Submit Anonymous Tip</a>
+
+      <div class="links">
+        <a href="{{ url_for('view_tips') }}">View All Tips</a>
+        <a href="{{ url_for('suspicious_places') }}">Suspicious Locations</a>
+        <a href="{{ url_for('help_view') }}">Reported Help Requests</a>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
